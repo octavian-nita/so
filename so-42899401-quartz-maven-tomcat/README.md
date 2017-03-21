@@ -4,44 +4,44 @@
 ---
 Using Quartz is, indeed, one of the most straightforward ways of doing this programmatically, since you will already have a server/app running.
 
-Having said that, employing it in any Java web application is, obviously, independent of the UI technology you might use (Vaadin included) and IMHO, it's better to reason about it independently.
+Having said that, employing it in any Java web application is, obviously, independent of the UI technology you might use (Vaadin included) and IMHO, it's better to reason about it separately.
 
 For the sake of completeness, I will go through all the steps involved in adding Quartz to a Maven-managed, Java web application below.
 
 **Adding Quartz as a Maven Dependency**
 
-Adding these in your *pom.xml* should suffice:
+Adding one dependency in your *pom.xml* should suffice:
 
     <dependency>
-        <groupId>org.quartz-scheduler</groupId>
-        <artifactId>quartz</artifactId>
-        <version>2.2.3</version>
+      <groupId>org.quartz-scheduler</groupId>
+      <artifactId>quartz</artifactId>
+      <version>2.2.3</version>
     </dependency>
 
 **Initializing a Quartz Scheduler in a Servlet Container**
 
-A default Quartz scheduler is automatically created and initialized upon Servlet Context initialization (as illustrated at http://www.quartz-scheduler.org/documentation/quartz-2.x/cookbook/ServletInitScheduler.html) by declaring a listener and several context parameters in the web.xml descriptor:
+A default Quartz scheduler is automatically created and initialized upon Servlet Context initialization (as illustrated at http://www.quartz-scheduler.org/documentation/quartz-2.x/cookbook/ServletInitScheduler.html) by declaring a servlet context listener and several context parameters to the *web.xml* descriptor:
 
     <context-param>
-        <param-name>quartz:config-file</param-name>
-        <param-value>/quartz.properties</param-value>
+      <param-name>quartz:config-file</param-name>
+      <param-value>/quartz.properties</param-value>
     </context-param>
     <context-param>
-        <param-name>quartz:shutdown-on-unload</param-name>
-        <param-value>true</param-value>
+      <param-name>quartz:shutdown-on-unload</param-name>
+      <param-value>true</param-value>
     </context-param>
     <context-param>
-        <param-name>quartz:wait-on-shutdown</param-name>
-        <param-value>false</param-value>
+      <param-name>quartz:wait-on-shutdown</param-name>
+      <param-value>false</param-value>
     </context-param>
     <context-param>
-        <param-name>quartz:start-scheduler-on-load</param-name>
-        <param-value>true</param-value>
+      <param-name>quartz:start-scheduler-on-load</param-name>
+      <param-value>true</param-value>
     </context-param>
     <listener>
-        <listener-class>
-            org.quartz.ee.servlet.QuartzInitializerListener
-        </listener-class>
+      <listener-class>
+        org.quartz.ee.servlet.QuartzInitializerListener
+      </listener-class>
     </listener>
 
 You should also configure the scheduler by providing a basic *quartz.properties* file:
@@ -51,12 +51,12 @@ You should also configure the scheduler by providing a basic *quartz.properties*
     org.quartz.threadPool.threadCount = 3
     org.quartz.jobStore.class = org.quartz.simpl.RAMJobStore
 
-At this point, after the application has been deployed / started, a Quartz scheduler instance can be obtained from a "standard" scheduler factory available to you under a default key in the web application's ServletContext object:
+At this point, after the application has been deployed/started, a Quartz scheduler instance can be obtained from a "standard" scheduler factory available to you under a default key in the web application's ServletContext object:
 
-    StdSchedulerFactory factory = (StdSchedulerFactory)
+    StdSchedulerFactory schedFact = (StdSchedulerFactory)
       ctx.getAttribute("org.quartz.impl.StdSchedulerFactory.KEY");
     try {
-        Scheduler scheduler = factory.getScheduler("LenartScheduler");
+        Scheduler scheduler = schedFact.getScheduler("LenartScheduler");
         // schedule Jobs here...
     } catch (SchedulerException e) {
         // properly handle the exception...
@@ -73,7 +73,7 @@ Easily done by implementing *org.quartz.Job*:
     import org.quartz.JobExecutionException;
     
     public class MainJob implements Job {
-    
+
         @Override
         public void execute(JobExecutionContext jobExecutionContext)
           throws JobExecutionException {
@@ -98,12 +98,12 @@ Given the available Scheduler, we need to define:
 **AND**
 
   2. a trigger for those details
+
 and use them both to finally schedule the job:
 
-    private void scheduleMainJob(Scheduler scheduler)
-      throws SchedulerException {
+    private void scheduleMainJob(Scheduler scheduler) throws SchedulerException {
         requireNonNull(scheduler);
-    
+
         JobDetail jobDetail = newJob(MainJob.class).storeDurably()
                                                    .withIdentity("MAIN_JOB")
                                                    .withDescription("Main Job to Perform")
@@ -131,29 +131,28 @@ Let's say we want to automatically schedule the main job, upon servlet context s
 
   2. *extend the QuartzInitializerListener* class to schedule our main job just after the scheduler gets created; this way, we don’t have to worry about the order in which the context listeners get called:
 
-    public class LenartQuartzListener extends QuartzInitializerListener {
-    
-        @Override
-        public void contextInitialized(ServletContextEvent evt) {
-            super.contextInitialized(evt);
-            // At this point, the default functionality
-            // has been executed hence the scheduler has been created!
-    
-            ServletContext ctx = evt.getServletContext();
-            StdSchedulerFactory factory = (StdSchedulerFactory)
-              ctx.getAttribute("org.quartz.impl.StdSchedulerFactory.KEY");
-            try {
-                scheduleMainJob(factory.getScheduler("LenartScheduler"));
-            } catch (SchedulerException e) {
-                // properly handle the exception...
+        public class LenartQuartzListener extends QuartzInitializerListener {
+
+            @Override
+            public void contextInitialized(ServletContextEvent evt) {
+                super.contextInitialized(evt);
+                // At this point, the default functionality
+                // has been executed hence the scheduler has been created!
+                ServletContext ctx = evt.getServletContext();
+                StdSchedulerFactory factory = (StdSchedulerFactory)
+                  ctx.getAttribute("org.quartz.impl.StdSchedulerFactory.KEY");
+                try {
+                    scheduleMainJob(factory.getScheduler("LenartScheduler"));
+                } catch (SchedulerException e) {
+                    // properly handle the exception...
+                }
             }
         }
-    }
 
 However, if we're using the (better, IMHO) second option, we do need to specified in the *web.xml* file our new Quartz listener, instead if the old one:
 
     <listener>
-        <listener-class>com.lenard.web.LenartQuartzListener</listener-class>
+      <listener-class>com.lenard.web.LenartQuartzListener</listener-class>
     </listener>
 
 At this point, never mind the UI technology used (Vaadin, etc.), a Quartz scheduler is automatically initialized and a job scheduled upon (web) application start up.
@@ -161,3 +160,5 @@ At this point, never mind the UI technology used (Vaadin, etc.), a Quartz schedu
 **If using Vaadin**
 
 These days, one can initialize a Vaadin-based web application without using a web.xml descriptor. If that's your case, note that you now need to add the web.xml file that specifies the Quartz initialization we've been talking about. But this does not clash with any Vaadin-specific stuff…
+
+I've created a small Vaadin-based project at https://github.com/octavian-nita/so/tree/master/so-42899401-quartz-maven-tomcat to illustrate how one can manually schedule / unschedule Quartz jobs using a Vaadin UI. Feel free to study it and ask ahead!
