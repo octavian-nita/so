@@ -41,7 +41,7 @@ public class LogInOutServlet extends HttpServlet {
             response.sendRedirect("/");
         } else {
             request.setAttribute("errorMessage", "Use 'Johnny' to log in!");
-            request.getRequestDispatcher("/logon").forward(request, response);
+            request.getRequestDispatcher("/login").forward(request, response);
         }
     }
 

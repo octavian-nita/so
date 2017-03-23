@@ -27,7 +27,7 @@ public class AccessFilter implements Filter {
         if (!path.startsWith("/static/") && !path.matches("/log(?:in|out|on|off|-me-in)$")) {
             HttpSession sess = rq.getSession(false);
             if (sess == null || sess.getAttribute("username") == null) {
-                ((HttpServletResponse) response).sendRedirect("/logon");
+                ((HttpServletResponse) response).sendRedirect("/login");
                 return;
             }
         }
