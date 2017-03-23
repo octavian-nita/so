@@ -66,3 +66,29 @@ main > * {
   display: table-cell;
   vertical-align: middle;
 }
+
+form * {
+  border: none;
+  margin: 0.3em;
+  padding: 0.2em;
+}
+
+form input {
+  background-color: rgb(240, 250, 260);
+  font-weight: 300;
+}
+
+form button {
+  margin: 0.5em;
+  background-color: lightblue;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+form button:hover {
+  background-color: lightcoral;
+}
+
+.err-msg {
+  color: lightcoral;
+}

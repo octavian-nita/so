@@ -12,13 +12,25 @@
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
 
-  <!--<servlet>-->
-  <!--<servlet-name>MainServlet</servlet-name>-->
-  <!--<servlet-class>com.octaviannita.web.MainServlet</servlet-class>-->
-  <!--</servlet>-->
-  <!--<servlet-mapping>-->
-  <!--<servlet-name>MainServlet</servlet-name>-->
-  <!--<url-pattern>/*</url-pattern>-->
-  <!--</servlet-mapping>-->
+  <servlet>
+    <servlet-name>Login</servlet-name>
+    <jsp-file>/login.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Login</servlet-name>
+    <url-pattern>/login</url-pattern>
+    <url-pattern>/logon</url-pattern>
+  </servlet-mapping>
+
+<!--
+  <servlet>
+    <servlet-name>Index</servlet-name>
+    <jsp-file>/index.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Index</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+-->
 
 </web-app>

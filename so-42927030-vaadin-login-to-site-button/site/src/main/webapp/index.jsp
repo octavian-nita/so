@@ -21,7 +21,10 @@
 
 <body>
 
-<main class="main"><span>Here's <em>${sessionScope.johnny}</em>!</span></main>
+<main class="main">
+  <p>Here's <em>${sessionScope.username}</em>!</p>
+  <p><a href="/logout" title="Log out" class="footer">Log out</a></p>
+</main>
 
 <!-- Load scripts at body's end so as not to block rendering. -->
 <script src="<c:url value="static/js/main.js" />"></script>
