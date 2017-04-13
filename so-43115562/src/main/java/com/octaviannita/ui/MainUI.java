@@ -54,6 +54,7 @@ public class MainUI extends UI {
         tree.addItem(itemId); // a tree item's label defaults to its ID
 
         // 2. If a parent ID is also provided as argument, we set that as parent for the newly added item
+
         if (parentId != null) {
             tree.setParent(itemId, parentId);
         }
@@ -66,6 +67,7 @@ public class MainUI extends UI {
         }
 
         // 4. Optionally we can expand an item if it has any children or force hiding the arrow if not:
+
         if (children.getLength() > 0) {
             tree.expandItem(itemId);
         } else {
