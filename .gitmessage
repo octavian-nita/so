@@ -1,0 +1,16 @@
+# 50-character subject line
+# [Add/Fix/Remove/Update/Refactor/Document] [summary]
+#
+# (git config --global commit.template ~/.gitmessage)
+# (see https://medium.com/@brunojorge11/level-you-up-to-awesome-commit-messages-a85558cb90e8)
+
+
+# 72-character wrapped longer description. This should answer:
+# Why was this change necessary? (Bug fix, feature, improvements?)
+ *
+# How does the change address the issue?
+ *
+# Are there any side effects?
+ *
+
+# Include a link to the ticket, if any.

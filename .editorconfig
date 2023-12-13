@@ -1,0 +1,30 @@
+# EditorConfig is awesome: http://EditorConfig.org
+# ( I kept the comment above because I agree :) )
+
+# Top-most EditorConfig file
+root = true
+
+# Defaults [*.{xhtml,html,xml,md,css,sass,scss,less,js,ts,json,yaml,yml,mustache,hbs,njk,java,groovy,gradle,php,py,rb,go,sql}]... etc.
+[*]
+charset = utf-8
+indent_size = 2
+indent_style = space
+max_line_length = 120
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{php,py}]
+indent_size = 4
+
+# Idiomatic Go...
+[*.go]
+indent_style = tab
+tab_width = 8
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+
+# Mustache and Handlebars templates are usually to be taken literally...
+[*.{mustache,hbs,njk}]
+insert_final_newline = false

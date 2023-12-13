@@ -1,26 +1,102 @@
-**/.idea
-**/*.iml
+# Commonly ignored file patterns in Java, JavaScript and Python code bases
+# possibly managed with Maven and developed with JetBrains IDEs, Eclipse or NetBeans
 
-**/.settings
-**/.buildpath
-**/.classpath
-**/.project
+# See https://stackoverflow.com/questions/41761128/are-leading-asterisks-redundant-in-gitignore-path-matching-syntax
 
-**/nbproject
-**/nbactions.xml
-**/nb-configuration.xml
+### IntelliJ IDEA ###
+.idea
+*.iml
+*.ipr
+*.iws
 
-**/bin
-**/target
-**/tmp
+### Eclipse/STS ###
+.apt_generated
+.buildpath
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
-**/*.log*
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+nbactions.xml
+nb-configuration.xml
 
-**/*.lck*
-**/*.lock*
+### VS Code ###
+.vscode/
 
-**/*.cache
-**/.DS_Store
+bin/
+dist/
+target/
+node_modules/
+**/src/_includes/css
+!**/src/main/**/target/
+!**/src/test/**/target/
+!.mvn/wrapper/maven-wrapper.jar
+HELP.md
 
-**/*[._-]private.*
-**/*[._-]local.*
+.flattened-pom.xml
+dependency-reduced-pom.xml
+
+# Unit test reports
+TEST*.xml
+
+log/
+*.log*
+
+rebel*
+*.cache
+tomcat*/
+
+npm-debug.*
+
+*.scssc
+*.swp
+.sass-cache
+.env
+.cache
+
+tmp/
+*.lck*
+*.lock*
+
+# Compiled Python bytecode
+*.py[cod]
+__pycache__/
+
+# Package files
+*.jar
+
+# Applications
+*.app
+*.exe
+*.war
+
+# Large media files
+*.mp4
+*.tiff
+*.avi
+*.flv
+*.mov
+*.wmv
+
+# Folder view configuration files
+.DS_Store
+Desktop.ini
+
+# Thumbnail cache files
+._*
+Thumbs.db
+
+# Files that might appear on external disks
+.Spotlight-V100
+.Trashes
