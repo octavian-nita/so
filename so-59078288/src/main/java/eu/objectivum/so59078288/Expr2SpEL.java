@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version $Id$
  */
 @Slf4j
-public class Expr {
+public class Expr2SpEL {
 
   public static void main(String[] args) {
     log.info("Usage: ...");

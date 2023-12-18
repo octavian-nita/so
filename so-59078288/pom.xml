@@ -49,7 +49,7 @@
 
     <dependency>
       <groupId>org.antlr</groupId>
-      <artifactId>antlr4</artifactId>
+      <artifactId>antlr4-runtime</artifactId>
       <version>4.13.1</version>
     </dependency>
 
@@ -61,6 +61,15 @@
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
         <version>4.13.1</version>
+        <configuration>
+          <arguments>
+            <argument>-package</argument>
+            <argument>eu.objectivum.so59078288</argument>
+          </arguments>
+          <outputDirectory>
+            ${project.build.directory}/generated-sources/antlr4/eu/objectivum/so59078288
+          </outputDirectory>
+        </configuration>
         <executions>
           <execution>
             <id>antlr</id>
