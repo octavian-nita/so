@@ -10,22 +10,27 @@ import org.junit.jupiter.api.Test;
  */
 class ExprParserTest {
 
-  private static ExprParser createParser(String exprSrc, String srcName) {
-    final var charStream = CharStreams.fromString(exprSrc, srcName);
-    final var exprLexer = new ExprLexer(charStream);
-    final var tokenStream = new CommonTokenStream(exprLexer);
-    return new ExprParser(tokenStream);
+  private static ExprParser parserFor(String exprSrc) {
+
+    final var chars = CharStreams.fromString(exprSrc);
+
+    final var exprLexer = new ExprLexer(chars);
+
+    final var tokens = new CommonTokenStream(exprLexer);
+
+    return new ExprParser(tokens);
   }
 
   @Test
   void _when_then() {
 
-    final var inputExpr = "(account='233AS77') AND (code='SIMP') AND (cost=270)";
-    final var expectedSpEL =
+    final var exprIn = "(account='233AS77') AND (code='SIMP') AND (cost=270)";
+    final var spelEx =
       "(account.equalsIgnoreCase(\"233AS77\")) and (code.equalsIgnoreCase(\"SIMP\")) and (cost eq 270)";
 
-    final var exprParser = createParser(inputExpr, "so59078288");
+    final var exprParser = parserFor(exprIn);
+    final var exprTree = exprParser.expr();
 
-    //Assertions.assertEquals(expectedSpEL, ...);
+    //Assertions.assertEquals(spelEx, ...);
   }
 }
