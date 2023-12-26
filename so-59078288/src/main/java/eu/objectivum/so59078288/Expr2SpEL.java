@@ -1,15 +1,51 @@
 package eu.objectivum.so59078288;
 
-import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.BailErrorStrategy;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
+
+import static java.lang.System.exit;
+import static java.lang.System.out;
 
 /**
  * @author <a href="mailto:octavian.nita@gmail.com">Octavian NITA</a>
  * @version $Id$
  */
-@Slf4j
 public class Expr2SpEL {
 
+  public String toSpEL(String expr) {
+
+    // Set up lexical analysis (tokenization)
+    final var chars = CharStreams.fromString(expr);
+    final var exprLexer = new ExprLexer(chars);
+
+    // Set up syntax analysis (parsing)
+    final var tokens = new CommonTokenStream(exprLexer);
+    final var exprParser = new ExprParser(tokens);
+    exprParser.setErrorHandler(new BailErrorStrategy());
+
+    // Parse by invoking the grammar start rule
+    final var exprTree = exprParser.expr();
+
+    // Set up translation to SpEL
+    final var toSpELListener = new Expr2SpELListener(); // our expression tree listener
+
+    // Translate
+    ParseTreeWalker.DEFAULT.walk(toSpELListener, exprTree);
+
+    return toSpELListener.getOutput();
+  }
+
   public static void main(String[] args) {
-    log.info("Usage: ...");
+    if (args.length == 0) {
+      out.printf("%nUsage: java " + Expr2SpEL.class.getName() + " [expr1] [expr2] [...]%n");
+      exit(1);
+    }
+
+    final var translator = new Expr2SpEL();
+    for (final var arg : args) {
+      out.println(translator.toSpEL(arg));
+    }
   }
 }

@@ -4,15 +4,11 @@ grammar Expr;
 
 /**
  * The (parser) entry/start rule that matches the entire input expression.
- * <p>
- * We need explicit EOF inclusion because we match the entire input.
- *
- * @see <a href="https://stackoverflow.com/questions/17844248/when-is-eof-needed-in-antlr-4">When is EOF needed in ANTLR 4?</a>
  */
 expr
   : expr AND expr
-  | '(' expr ')'
   | relExpr
+  | LPAREN expr RPAREN
   ;
 
 relExpr
@@ -28,7 +24,10 @@ operand
 // Lexical/lexer/token rules start with an uppercase letter
 
 EQ  : '=' ;
-AND : 'AND' ;
+AND : A N D ;
+
+LPAREN : '(' ;
+RPAREN : ')' ;
 
 INT    : [0-9]+ ;
 STRING : '\'' ~['\\\r\n]* '\'' ;
@@ -47,3 +46,7 @@ fragment JAVA_ID_PART  : [a-zA-Z$_0-9] ; // fragment rules are not tokens but he
 
 // Match but toss out whitespace (every possible input char must be matched by at least one lexical rule).
 WS : [ \t\r\n\f]+ -> skip ;
+
+fragment A : [aA] ; // match either an 'a' or 'A'
+fragment D : [dD] ;
+fragment N : [nN] ;
