@@ -13,12 +13,17 @@ class ExprParserTest {
   @Test
   void toSpEL_whenCorrectInput_thenExpectedSpEL() {
 
-    final var translatorToTest = new Expr2SpEL();
+    final var inputsAndExpectedOutputs = new String[][]{
+      { "(account='233AS77') AND (code='SIMP') and (cost=270)",
+        "(account.equalsIgnoreCase(\"233AS77\")) and (code.equalsIgnoreCase(\"SIMP\")) and (cost eq 270)" },
+      { "(account='233AS77' AND code='SIMP') and '270' = 270",
+        "(account.equalsIgnoreCase(\"233AS77\") and code.equalsIgnoreCase(\"SIMP\")) and \"270\" eq 270" }
+    };
 
-    final var exprIn = "(account='233AS77') AND (code='SIMP') and (cost=270)";
-    final var spelEx =
-      "(account.equalsIgnoreCase(\"233AS77\")) and (code.equalsIgnoreCase(\"SIMP\")) and (cost eq 270)";
+    final var translatorToTest = new Expr2SpEL(); // our system-under-test
 
-    assertEquals(spelEx, translatorToTest.toSpEL(exprIn));
+    for (final var inputAndExpectedOutput : inputsAndExpectedOutputs) {
+      assertEquals(inputAndExpectedOutput[1], translatorToTest.toSpEL(inputAndExpectedOutput[0]));
+    }
   }
 }

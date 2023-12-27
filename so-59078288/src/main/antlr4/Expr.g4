@@ -1,6 +1,6 @@
 grammar Expr;
 
-// Parser rules start with a lowercase letter.
+// Parser rules start with a lowercase letter
 
 /**
  * The (parser) entry/start rule that matches the entire input expression.
@@ -29,10 +29,10 @@ AND : A N D ;
 LPAREN : '(' ;
 RPAREN : ')' ;
 
-INT    : [0-9]+ ;
 STRING : '\'' ~['\\\r\n]* '\'' ;
+INT    : [0-9]+ ;
 
-// Identifiers must appear after all keywords like AND, OR, etc.
+// Identifiers must appear after all keywords like AND, OR, etc
 
 /**
  * We are generating SpEL expressions, so we allow only Java-valid identifiers, albeit a bit simplified.
@@ -44,9 +44,10 @@ JAVA_ID : JAVA_ID_START JAVA_ID_PART* ;
 fragment JAVA_ID_START : [a-zA-Z$_] ;
 fragment JAVA_ID_PART  : [a-zA-Z$_0-9] ; // fragment rules are not tokens but help with token recognition
 
-// Match but toss out whitespace (every possible input char must be matched by at least one lexical rule).
+// Match but toss out whitespace (every possible input char must be matched by at least one lexical rule)
 WS : [ \t\r\n\f]+ -> skip ;
 
-fragment A : [aA] ; // match either an 'a' or 'A'
+// Fragments for case-insensitive keyword tokens
+fragment A : [aA] ; // match either an 'a' or an 'A'
 fragment D : [dD] ;
 fragment N : [nN] ;

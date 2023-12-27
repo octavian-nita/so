@@ -23,6 +23,7 @@ public class Expr2SpEL {
     // Set up syntax analysis (parsing)
     final var tokens = new CommonTokenStream(exprLexer);
     final var exprParser = new ExprParser(tokens);
+    // Cancel parsing as soon as we get a syntax error
     exprParser.setErrorHandler(new BailErrorStrategy());
 
     // Parse by invoking the grammar start rule
@@ -39,13 +40,13 @@ public class Expr2SpEL {
 
   public static void main(String[] args) {
     if (args.length == 0) {
-      out.printf("%nUsage: java " + Expr2SpEL.class.getName() + " [expr1] [expr2] [...]%n");
+      out.printf("%nUsage: java %s [expr1] [expr2] [...]%n", Expr2SpEL.class.getName());
       exit(1);
     }
 
     final var translator = new Expr2SpEL();
     for (final var arg : args) {
-      out.println(translator.toSpEL(arg));
+      out.printf("%n%s%n", translator.toSpEL(arg));
     }
   }
 }
